@@ -22,6 +22,8 @@ namespace OdeToFood.Controllers
             //                    Country = r.Country,
             //                    CountOfReviews = r.Reviews.Count()
             //                };
+            //above is unnecessary
+
             var model = _db.Restaurants.OrderByDescending(r => r.Reviews.Average(review => review.Rating))
                 .Where(r=>SearchTerm ==null || r.Name.StartsWith(SearchTerm))
                 .Take(10)
