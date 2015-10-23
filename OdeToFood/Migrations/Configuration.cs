@@ -11,7 +11,7 @@ namespace OdeToFood.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(OdeToFood.Models.OdeToFoodDb context)
@@ -41,7 +41,10 @@ namespace OdeToFood.Migrations
                           new RestaurantReview { Rating = 9, Body="Great food!", ReviewerName="Scott" }   
                       }   
                   });  
-
+            for(int i=0;i<1000;i++)
+            {
+                context.Restaurants.AddOrUpdate(r => r.Name, new Restaurant { Name = i.ToString(), City = "nowhere", Country = "USA" });
+            }
         }
     }
 }

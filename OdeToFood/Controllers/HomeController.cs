@@ -23,6 +23,7 @@ namespace OdeToFood.Controllers
             //                    CountOfReviews = r.Reviews.Count()
             //                };
             //above is unnecessary
+            
 
             var model = _db.Restaurants.OrderByDescending(r => r.Reviews.Average(review => review.Rating))
                 .Where(r=>SearchTerm ==null || r.Name.StartsWith(SearchTerm))
@@ -35,10 +36,24 @@ namespace OdeToFood.Controllers
                                 Country = r.Country,
                                 CountOfReviews = r.Reviews.Count()
                             });
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Restaurant", model);
+            }
 
             return View(model);
         }
 
+        public ActionResult AutoComplete(string term)
+        {
+            var model = _db.Restaurants.Where(r => r.Name.StartsWith(term))
+                .Take(10)
+                .Select(r => new 
+                { 
+                    label = r.Name
+                });
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult About()
         {
             var model = new AboutModel();
